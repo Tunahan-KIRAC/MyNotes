@@ -1,0 +1,77 @@
+﻿@using MyNotes.BusinessLayer.ValueObject
+@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+<link href="~/Content/Login.RegisterStyle.css" rel="stylesheet" />
+@using (Html.BeginForm())
+{
+    <div class="logreg mt-1 ">
+        <main class="form-signin">
+            <form>
+                <img class="mb-4 rounded-circle" src="~/Images/user2.png" alt="test" width="144" height="120">
+                <h1 class="h3 mb-3 fw-normal">Giris Formu</h1>
+                @Html.ValidationSummary(false)
+
+                @if (ViewBag.SetLink != null)
+                {
+                    <a href="@ViewBag.SetLink" class="btn btn-primary">Activate</a>
+                }
+                <div class="form-floating">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Adi", id = "floatingInput" })
+
+                    <label for="floatingInput">Adi</label>
+                </div>
+                <div class="form-floating">
+                    @Html.TextBoxFor(model => model.Lastname, new { @class = "form-control", placeholder = "Soyadi", id = "floatingInput" })
+
+                    <label for="floatingInput">Soyadi</label>
+                </div>
+
+                <div class="form-floating">
+                    @Html.TextBoxFor(model => model.Username, new { @class = "form-control", placeholder = "Kullanici Adi", id = "floatingInput" })
+                    @*<input type="text" class="form-control" id="floatingInput" placeholder="Kullanici Adi">*@
+                    <label for="floatingInput">Kullanici Adi</label>
+                </div>
+                <div class="form-floating">
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "E-Mail", id = "floatingInput" })
+                    @*<input type="text" class="form-control" id="floatingInput" placeholder="Kullanici Adi">*@
+                    <label for="floatingInput">Email</label>
+                </div>
+                <div class="form-floating">
+                    @Html.TextBoxFor(model => model.Password, new { @class = "form-control", placeholder = "Sifre", id = "floatingPassword", type = "password" })
+                    @*<input type="password" class="form-control" id="floatingPassword" placeholder="Sifre">*@
+                    <label for="floatingPassword">Sifre</label>
+                </div>
+                <div class="form-floating">
+                    @Html.TextBoxFor(model => model.RePassword, new { @class = "form-control", placeholder = "Sifre Tekrari", id = "floatingRePassword", type = "password" })
+                    @*<input type="password" class="form-control" id="floatingPassword" placeholder="Sifre">*@
+                    <label for="floatingPassword">Sifre Tekrari</label>
+                </div>
+
+
+                @*<div class="checkbox mb-3">
+                        <label>
+                            <input type="checkbox" value="remember-me"> Remember me
+                        </label>
+                    </div>*@
+                <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+            </form>
+        </main>
+
+    </div>
+}
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("header").hide();
+        $("footer").hide();
+        $("#category2").hide(); //id oldugu icin basına # koyduk
+        $("#category3").removeClass("col-md-9").addClass("col-md text-center d-flex justify-content-center"); //id oldugu icin basına # koyduk
+        $("body").addClass("bg-warning");
+    });
+
+</script>
+

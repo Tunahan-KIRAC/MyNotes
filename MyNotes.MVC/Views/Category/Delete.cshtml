@@ -1,0 +1,75 @@
+﻿@model MyNotes.BusinessLayer.ValueObject.CategoryViewModel
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<div class="row mt-5 mb-3">
+    <div class="col-md-6 offset-md-3">
+        <h2>@ViewBag.Title</h2>
+    </div>
+</div>
+<div class="row d-flex">
+    <div class="col-md-6 offset-md-3">
+        <h3>Kaydi silmek istediginize emin misiniz?</h3>
+
+        <div>
+            <h4>Category</h4>
+            <hr />
+            <dl class="row d-flex" style="display: block">
+                <dt class="col-md-4">
+                    @Html.DisplayNameFor(model => model.Category.Tittle)
+                </dt>
+
+                <dd class="col-md-8">
+                    @Html.DisplayFor(model => model.Category.Tittle)
+                </dd>
+
+                <dt class="col-md-4">
+                    @Html.DisplayNameFor(model => model.Category.Description)
+                </dt>
+
+                <dd class="col-md-8">
+                    @Html.DisplayFor(model => model.Category.Description)
+                </dd>
+
+                <dt class="col-md-4">
+                    @Html.DisplayNameFor(model => model.Category.CreatedOn)
+                </dt>
+
+                <dd class="col-md-8">
+                    @Html.DisplayFor(model => model.Category.CreatedOn)
+                </dd>
+
+                <dt class="col-md-4">
+                    @Html.DisplayNameFor(model => model.Category.ModifiedOn)
+                </dt>
+
+                <dd class="col-md-8">
+                    @Html.DisplayFor(model => model.Category.ModifiedOn)
+                </dd>
+
+                <dt class="col-md-4">
+                    @Html.DisplayNameFor(model => model.Category.ModifiedUserName)
+                </dt>
+
+                <dd class="col-md-8">
+                    @Html.DisplayFor(model => model.Category.ModifiedUserName)
+                </dd>
+
+            </dl>
+
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="d-flex justify-content-evenly">
+                    @Html.ActionLink("Listeye Geri Don", "Index", null, new { @class = "btn btn-outline-dark" })
+                    <button type="submit" value="Sil" class="btn btn-danger">Sil</button>
+
+                </div>
+            }
+        </div>
+
+    </div>
+</div>

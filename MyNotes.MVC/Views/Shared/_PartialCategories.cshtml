@@ -1,0 +1,47 @@
+﻿
+@using MyNotes.BusinessLayer
+@using MyNotes.BusinessLayer.Models
+@*@using MyNotes.EntityLayer*@
+@*@using MyNotes.MVC.Models*@
+
+@{ 
+    CategoryManager cm = new CategoryManager();
+    var list = CacheHelper.GetCategoriesFromCache();
+}
+<link href="~/Content/sa.css" rel="stylesheet" />
+<div id="category1">
+    <p class="lead mt-3">
+        <span class="fw-bolder">Kategoriler</span>
+    </p>
+    <div class="list-group">
+        <a href="@Url.Action("Index","Home")" class="list-group-item-action active">
+            <span>
+                <i class="fas fa-angle-double-right"></i> Tumu
+            </span>
+        </a>
+        @foreach (var cat in list)
+        {
+            if (ViewBag.CategoryIdx == cat.Id)
+            {
+                <a href="/Home/ByCategoryId/@cat.Id" title="@cat.Description" class="list-group-item list-group-item-action active">
+                    <span>
+                        <i class="fas fa-angle-double-right"></i>
+                    </span> @cat.Tittle  <span style="float:right">@cat.Notes.Count</span>
+
+                </a>
+            }
+
+            else
+            {
+                <a href="/Home/ByCategoryId/@cat.Id" title="@cat.Description" class="list-group-item list-group-item-action">
+                    <span>
+                        <i class="fas fa-angle-double-right"></i>
+                    </span> @cat.Tittle  <span style="float:right">@cat.Notes.Count</span>
+
+                </a>
+            }
+
+
+        }
+    </div>
+</div>

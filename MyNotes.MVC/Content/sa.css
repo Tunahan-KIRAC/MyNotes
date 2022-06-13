@@ -1,0 +1,23 @@
+﻿#uyduruk {
+    color: white;
+    cursor: pointer;
+    margin-top: 0.75rem;
+    margin-bottom: 2rem;
+    text-shadow: 1px 0 0 red, -1px 0 0 red, 0 1px 0 red, 0 -1px 0 red, 1px 1px red, -1px -1px 0 red, 1px -1px 0 red, -1px 1px 0 red;
+}
+#feleket {
+    color: black;
+}
+/*#feleket:link {
+    color: red;
+}*/
+
+/*::selection {
+    background: #000000;
+    color: #ffffff;
+}
+
+::-moz-selection {
+    background: #000000;
+    color: #ffffff;
+}*/

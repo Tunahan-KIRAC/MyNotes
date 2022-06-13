@@ -1,0 +1,206 @@
+﻿@using MyNotes.BusinessLayer
+@*@{
+    NoteManager nm = new NoteManager();
+    var lst = nm.List();
+}*@
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<link href="~/Content/sa.css" rel="stylesheet" />
+<section class="py-5">
+    <div class="container-fluid px-4 px-lg-5 mt-3">
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-xl-3 justify-content-center">
+            @{
+                int i = 0;
+            }
+            @foreach (var note in Model)
+            {
+                <div class="col mb-3">
+                    <div class="card h-100">
+                        <!-- Product image-->
+                        <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                        <!-- Product details-->
+                        <div class="card-body py-4 px-1">
+                            <div class="text-center">
+                                <!-- Product name-->
+                                <h5 class="fw-bolder">@note.Tittle</h5>
+                                <!-- Product reviews-->
+                                <div class="d-flex justify-content-between ">
+                                    <div>
+                                        <i class="far fa-user"></i>
+                                        @note.Owner.UserName
+                                    </div>
+                                    <div>
+                                        <i class="far fa-clock"></i>
+                                        @note.ModifiedOn
+                                    </div>
+                                </div>
+                                <!-- Product price-->
+                                <p class="card-text">
+                                    @if (string.IsNullOrEmpty(note.Text) == false && note.Text.Length > 70)
+                                    {
+                                        @(note.Text.Substring(0,70))<span class="text-danger">@("...")</span>
+
+
+                                    }
+                                    else if (string.IsNullOrEmpty(note.Text))
+                                    {
+                                        <span class="text-danger">@("...")</span>
+                                    }
+                                    else
+                                    {
+                                        @note.Text
+                                    }
+
+                                </p>
+                            </div>
+                        </div>
+                        <hr />
+                        <!-- Product actions-->
+                        <div class="bg-transparent d-flex justify-content-between">
+                            <p>
+                                <button class="btn btn-outline-light text-dark btn-sm" onclick="ChangeClass(this)" ondblclick="ChangeClass2(this)">
+                                    <i id="uyduruk" class="fas fa-heart" > </i> @note.LikeCount
+                                </button>
+                            </p>
+                            <p>
+                                <button class="btn btn-outline-light text-dark btn-sm" data-bs-toggle="modal" data-bs-target="#modal_comment" data-note-id="@note.Id">
+                                    <i class="bi bi-chat-left-dots-fill text"> </i> Yorumlar
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@Bootstrap.ModalPopup("modal_comment", "Yorumlar")
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script>
+    let noteId = -1;
+    let modalCommentBodyId = "#modal_comment_body";
+    $(function () {
+        $('#modal_comment').on('show.bs.modal', function (e) {
+            var btn = $(e.relatedTarget);
+            noteId = btn.data("note-id");
+            console.log("noteId =" + noteId);
+            $(modalCommentBodyId).load("/Comment/ShowNoteComments/" + noteId);
+        });
+    });
+    function doComment(btn, e, commentId, spanId) {
+        var button = $(btn);
+        var mode = button.data('edit-mode');
+        if (e === 'edit_clicked') {
+            if (!mode) {
+                button.data('edit-mode', true);
+                button.removeClass('btn-warning');
+                button.addClass('btn-success');
+                var btnSpan = button.find('span');
+                btnSpan.removeClass('bi-pencil');
+                btnSpan.addClass('bi-check');
+                $(spanId).addClass('editable');
+                $(spanId).attr('contenteditable', true);
+                $(spanId).focus();
+
+            }
+            else {
+
+                button.data('edit-mode', false);
+                button.removeClass('btn-success');
+                button.addClass('btn-warning');
+                var btnSpan = button.find('span');
+                btnSpan.removeClass('bi-check');
+                btnSpan.addClass('bi-pencil');
+                $(spanId).addClass('editable');
+                $(spanId).attr('contenteditable', false);
+
+
+                var txt = $(spanId).text();
+                $.ajax({
+                    method: "POST",
+                    url: "/Comment/Edit/" + commentId,
+                    data: { text: txt }
+                }).done(function (data) {
+                    if (data.result) {
+                        //yorumlari tekrar yukleme
+                        $(modalCommentBodyId).load("/Comment/ShowNoteComments/" + noteId);
+                    }
+                    else {
+                        alert("Yorumunuz Guncellenemedi.");
+                    }
+                }).fail(function () {
+                    alert("Sunucuyla baglanti kurulamadi.");
+                });
+
+            }
+
+        }
+        else if (e === 'delete_clicked') {
+            var dialog_res = confirm("Yorum silinsin mi?");
+            if (!dialog_res) {
+                return false;
+            }
+            $.ajax({
+                method: "GET",
+                url: "/Comment/Delete/" + commentId
+            }).done(function(data) {
+                if (data.result) {
+                    $(modalCommentBodyId).load("/Comment/ShowNoteComments/" + noteId);
+                } else {
+                    alert("Yorum silinemedi");
+                }
+            }).fail(function() {
+                alert("Sunucu ile baglanti kurulumadi");
+            })
+        }
+        else if (e === 'new_clicked') {
+            var txt = $("#new_comment_text").val();
+
+            $.ajax({
+                method: "POST",
+                url: "/Comment/Create",
+                data: {
+                    "text":txt , "noteid":noteId
+                }
+            }).done(function(data) {
+                if (data.result) {
+                    $(modalCommentBodyId).load("/Comment/ShowNoteComments/" + noteId);
+                } else {
+                    alert("Yorum silinemedi");
+                }
+            }).fail(function() {
+                alert("Sunucu ile baglanti kurulmadi");
+            })
+        }
+    }
+    function ChangeClass(btn) {
+        var button = $(btn);
+        var btni = button.find('#uyduruk');
+        //btni.remove();
+        //btni.add('#uyduruk:hover');
+        btni.css("color", "red");
+
+
+
+
+    }
+    function ChangeClass2(btn) {
+        var button = $(btn);
+        var btni = button.find('#uyduruk');
+        //btni.remove();
+        //btni.add('#uyduruk:hover');
+
+        btni.css("color", "white");
+
+
+    }
+
+    
+
+    
+  
+   
+</script>

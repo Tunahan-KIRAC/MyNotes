@@ -1,0 +1,60 @@
+﻿@using MyNotes.BusinessLayer.Models
+
+@{
+    //CommandManager cm = new CommandManager();
+    //var list = cm.List();
+    var user = CurrentSession.User;
+
+}
+
+@foreach (var item in Model)
+{
+    <div class="d-flex border border-danger mb-1">
+        <div class="flex-shrink-0 mt-3">
+            <i class="bi bi-chat-left-dots-fill text-danger ms-3"></i>
+        </div>
+        <div class="flex-grow-1 row ms-3">
+            <span id="comment_text_@item.Id" class="col-md-9 fs-6" contenteditable="false">@item.Text</span>
+            @if (user != null && user.Id == item.Owner.Id)
+            {
+                <span class="col-md-3">
+                    <button type="button" class="btn btn-warning btn-sm-2" data-edit-mode="false" onclick="doComment(this,'edit_clicked',@item.Id,'#comment_text_@item.Id')">
+                        <span class="bi bi-pencil"></span>
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm-2" onclick="doComment(this,'delete_clicked',@item.Id)">
+                        <span class="bi bi-trash"></span>
+                    </button>
+                </span>
+
+            }
+            <small class="col-md-12">
+                <span class="bi bi-clock"></span>@item.ModifiedOn &nbsp;&nbsp;
+                <span class="bi bi-user"></span>@item.Owner.UserName
+            </small>
+
+        </div>
+
+    </div>
+}
+
+@if (user != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="input-group mb-3">
+                <input type="text" id="new_comment_text" placeholder="Yorumunuz" class="form-control" />
+                <span class="input-group-text" id="basic-addon2">
+                    <button class="btn btn-succes" onclick="doComment(this,'new_clicked',-1)">
+                        <span class="far fa-paper-plane">   </span> Gonder
+                    </button>
+                </span>
+            </div>
+        </div>
+    </div>
+}
+

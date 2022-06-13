@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MyNotes.EntityLayer.Category>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<p>
+    <a href="/Category/Create" class="btn btn-primary">Yeni Kayit</a>
+</p>
+
+<table class="table table-bordered table">
+    <thead>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Tittle)</th>
+        <th>@Html.DisplayNameFor(model => model.Description)</th>
+        <th>Durum</th>
+
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>@Html.DisplayFor(modelItem => item.Tittle)</td>
+            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+
+            <td class="d-flex justify-content-around">
+                @Bootstrap.LinkButton("/Category/Edit/"+item.Id, "warning", "btn-sm ", "Guncelle", "", "bi bi-pencil", string.Empty)
+                @*<a href="/Category/Edit" class="btn btn-warning" title="Guncelle"><i class="bi bi-pencil"></i></a>*@
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id })|
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })|*@
+                @Bootstrap.LinkButton("/Category/Details/"+item.Id, "primary", "btn-sm ", "Detaylar", "", "bi bi-search", string.Empty)
+                @*@Html.ActionLink("Delete", "Delete", new { id = item.Id })|*@
+                @Bootstrap.LinkButton("/Category/Delete/"+item.Id, "danger", "btn-sm ", "Sil", "", "bi bi-trash", string.Empty)
+            </td>
+
+        </tr>
+    }
+
+    </tbody>
+
+
+
+
+
+
+</table>

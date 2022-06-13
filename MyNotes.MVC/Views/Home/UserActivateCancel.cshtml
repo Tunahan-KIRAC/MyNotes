@@ -1,0 +1,45 @@
+﻿@using MyNotes.EntityLayer.Messages
+@model List<ErrorMessageObj>
+@{
+    ViewBag.Title = "Hesap Gecersiz";
+}
+
+<link href="~/Content/Login.RegisterStyle.css" rel="stylesheet" />
+<div class="logreg">
+    <div class="form-signin">
+        <form>
+            <img src="~/Images/dislike.png" alt="test" class="mb-4 rounded-circle" width="144" height="120" />
+            <h1 class="h3 mb-3 fw-normal">Yonlendiriliriyorsunuz...</h1>
+            <div class="text-danger">
+                <h2>
+                    <span>Gecersiz Islem</span>
+                </h2>
+                <hr />
+                <p class="text-justify">
+                    @{ 
+                        foreach (ErrorMessageObj err in Model)
+                        {
+                            @err.Message<br />
+                        }
+                    }
+                </p>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("header").hide();
+        $("footer").hide();
+        $("#category2").hide(); //id oldugu icin basına # koyduk
+        $("#category3").removeClass("col-md-9").addClass("col-md text-center d-flex justify-content-center"); //id oldugu icin basına # koyduk
+        $("body").addClass("bg-warning");
+
+        setTimeout(function () {
+            window.location = "/Home/Index";
+        }, 30000);
+
+    });
+
+</script>
